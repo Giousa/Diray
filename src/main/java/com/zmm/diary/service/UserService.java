@@ -15,8 +15,6 @@ public interface UserService {
 
     ResultVO update(User user);
 
-    ResultVO delete(String id);
-
     ResultVO findUserById(String id);
 
 }

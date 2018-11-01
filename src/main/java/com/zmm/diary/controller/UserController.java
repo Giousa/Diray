@@ -2,17 +2,10 @@ package com.zmm.diary.controller;
 
 import com.zmm.diary.bean.ResultVO;
 import com.zmm.diary.bean.User;
-import com.zmm.diary.enums.ResultEnum;
 import com.zmm.diary.service.UserService;
-import com.zmm.diary.utils.KeyUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -51,4 +44,12 @@ public class UserController {
         return resultVO;
     }
 
+    @GetMapping(value = {"/findUserById/{id}","/findUserById"})
+    public ResultVO findUserById(@PathVariable(value = "id",required = false)String id){
+
+
+        ResultVO resultVO = userService.findUserById(id);
+
+        return resultVO;
+    }
 }

@@ -9,8 +9,8 @@ import com.zmm.diary.utils.KeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,18 +68,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResultVO delete(String id) {
-
-        try {
-            userRepository.deleteById(id);
-            return ResultVO.ok();
-        }catch (Exception e){
-            return ResultVO.error(ResultEnum.SERVE_EXCEPTION);
-        }
-    }
-
-    @Override
     public ResultVO findUserById(String id) {
+
+        if(StringUtils.isEmpty(id)){
+            return ResultVO.error(ResultEnum.PARAM_ERROR);
+        }
 
         Optional<User> byId = userRepository.findById(id);
 
