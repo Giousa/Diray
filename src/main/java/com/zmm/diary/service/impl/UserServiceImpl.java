@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public ResultVO create(String username, String password) {
+    public ResultVO register(String username, String password) {
 
         List<User> userList = userRepository.findByUsername(username);
 
@@ -41,6 +41,19 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.save(pre);
         return ResultVO.ok(user);
+    }
+
+    @Override
+    public ResultVO login(String username, String password) {
+
+
+        User user = userRepository.findUserByUsernameAndPassword(username, DigestUtils.md5DigestAsHex(password.getBytes()));
+
+        if(user != null){
+            return ResultVO.ok(user);
+        }
+
+        return ResultVO.error(ResultEnum.USER_NOT_EXIST);
     }
 
     @Override
@@ -78,12 +91,20 @@ public class UserServiceImpl implements UserService {
 
         if(byId.isPresent()){
             return ResultVO.ok(byId.get());
-        }else {
-
-            return ResultVO.error(ResultEnum.USER_NOT_EXIST);
         }
 
+        return ResultVO.error(ResultEnum.USER_NOT_EXIST);
 
+    }
+
+    @Override
+    public ResultVO modifyPassword(String id, String newPassword) {
+        return null;
+    }
+
+    @Override
+    public ResultVO modifyUsername(String id, String newUsername) {
+        return null;
     }
 
 }

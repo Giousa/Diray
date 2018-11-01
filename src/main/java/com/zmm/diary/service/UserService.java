@@ -11,10 +11,17 @@ import com.zmm.diary.bean.User;
  */
 public interface UserService {
 
-    ResultVO create(String username, String password);
+    ResultVO register(String username, String password);
+
+    ResultVO login(String username, String password);
 
     ResultVO update(User user);
 
     ResultVO findUserById(String id);
+
+    ResultVO modifyPassword(String id,String newPassword);
+
+    ResultVO modifyUsername(String id,String newUsername);
+
 
 }

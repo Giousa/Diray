@@ -26,10 +26,20 @@ public class UserController {
     @PostMapping(value = "/register")
     public ResultVO register(@RequestParam("username")String username, @RequestParam("password")String password){
 
-        ResultVO resultVO = userService.create(username, password);
+        ResultVO resultVO = userService.register(username, password);
 
         return resultVO;
     }
+
+
+    @PostMapping(value = "/login")
+    public ResultVO login(@RequestParam("username")String username, @RequestParam("password")String password){
+
+        ResultVO resultVO = userService.login(username, password);
+
+        return resultVO;
+    }
+
 
     @PostMapping(value = "/updateUser")
     public ResultVO updateUser(@Valid User user, BindingResult bindingResult){
