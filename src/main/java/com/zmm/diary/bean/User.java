@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 /**
@@ -25,6 +26,7 @@ import java.util.Date;
 public class User {
 
     @Id
+    @NotBlank(message = "参数id不能为空")
     private String id;
 
     private String username;

@@ -17,9 +17,11 @@ public enum ResultEnum {
 
     USER_EXIST(202,"用户已存在"),
 
-    USERNAME_ERROR(203,"用户名格式不正确"),
+    USER_NOT_EXIST(203,"用户不存在"),
 
-    PASSWORD_ERROR(204,"密码格式不正确")
+    USERNAME_ERROR(204,"用户名格式不正确"),
+
+    PASSWORD_ERROR(205,"密码格式不正确")
 
     ;
 

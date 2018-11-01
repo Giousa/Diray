@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Description:
@@ -44,7 +46,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResultVO update(User user) {
 
-        User update = userRepository.save(user);
+        String id = user.getId();
+
+        Optional<User> byId = userRepository.findById(id);
+
+        if(!byId.isPresent()){
+            return ResultVO.error(ResultEnum.USER_NOT_EXIST);
+        }
+
+        User userDB = byId.get();
+
+        userDB.setNickname(user.getNickname());
+        userDB.setGender(user.getGender());
+        userDB.setAge(user.getAge());
+        userDB.setBirthday(user.getBirthday());
+        userDB.setHeight(user.getHeight());
+        userDB.setWeight(user.getWeight());
+
+        User update = userRepository.save(userDB);
         return ResultVO.ok(update);
     }
 
@@ -62,9 +81,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResultVO findUserById(String id) {
 
-        User user = userRepository.findById(id).get();
+        Optional<User> byId = userRepository.findById(id);
 
-        return ResultVO.ok(user);
+        if(byId.isPresent()){
+            return ResultVO.ok(byId.get());
+        }else {
+
+            return ResultVO.error(ResultEnum.USER_NOT_EXIST);
+        }
+
+
     }
 
 }
