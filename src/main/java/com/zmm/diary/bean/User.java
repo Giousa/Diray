@@ -1,5 +1,6 @@
 package com.zmm.diary.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
@@ -31,6 +32,7 @@ public class User {
 
     private String username;
 
+    @JsonIgnore
     private String password;
 
     private String type;
@@ -54,7 +56,6 @@ public class User {
     @CreatedDate
     private Date createTime;
 
-//    @JsonSerialize(using = Date2LongSerializer.class)
     @LastModifiedDate
     private Date updateTime;
 }
