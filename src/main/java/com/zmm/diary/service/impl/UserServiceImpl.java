@@ -99,12 +99,38 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResultVO modifyPassword(String id, String newPassword) {
-        return null;
+
+        Optional<User> byId = userRepository.findById(id);
+
+        if(!byId.isPresent()){
+            return ResultVO.error(ResultEnum.USER_NOT_EXIST);
+        }
+
+        User user = byId.get();
+
+        user.setPassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()));
+
+        User modify = userRepository.save(user);
+
+        return ResultVO.ok(modify);
     }
 
     @Override
     public ResultVO modifyUsername(String id, String newUsername) {
-        return null;
+
+        Optional<User> byId = userRepository.findById(id);
+
+        if(!byId.isPresent()){
+            return ResultVO.error(ResultEnum.USER_NOT_EXIST);
+        }
+
+        User user = byId.get();
+
+        user.setUsername(newUsername);
+
+        User modify = userRepository.save(user);
+
+        return ResultVO.ok(modify);
     }
 
 }

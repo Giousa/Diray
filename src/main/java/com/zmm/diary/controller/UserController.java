@@ -62,4 +62,16 @@ public class UserController {
 
         return resultVO;
     }
+
+    @PostMapping(value = "modifyPassword")
+    public ResultVO modifyPassword(@RequestParam("id")String id, @RequestParam("newPassword")String newPassword){
+
+        return userService.modifyPassword(id,newPassword);
+    }
+
+    @PostMapping(value = "modifyUsername")
+    public ResultVO modifyUsername(@RequestParam("id")String id, @RequestParam("newUsername")String newUsername){
+
+        return userService.modifyUsername(id,newUsername);
+    }
 }
