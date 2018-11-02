@@ -29,18 +29,14 @@ public class UserController {
     @PostMapping(value = "/register")
     public ResultVO register(@RequestParam("username")String username, @RequestParam("password")String password){
 
-        ResultVO resultVO = userService.register(username, password);
-
-        return resultVO;
+        return userService.register(username, password);
     }
 
 
     @PostMapping(value = "/login")
     public ResultVO login(@RequestParam("username")String username, @RequestParam("password")String password){
 
-        ResultVO resultVO = userService.login(username, password);
-
-        return resultVO;
+        return userService.login(username, password);
     }
 
 
@@ -52,18 +48,14 @@ public class UserController {
             return ResultVO.build(201,bindingResult.getFieldError().getDefaultMessage());
         }
 
-        ResultVO resultVO = userService.update(user);
-
-        return resultVO;
+        return userService.update(user);
     }
 
     @GetMapping(value = {"/findUserById/{id}","/findUserById"})
     public ResultVO findUserById(@PathVariable(value = "id",required = false)String id){
 
 
-        ResultVO resultVO = userService.findUserById(id);
-
-        return resultVO;
+        return userService.findUserById(id);
     }
 
     @PostMapping(value = "modifyPassword")
