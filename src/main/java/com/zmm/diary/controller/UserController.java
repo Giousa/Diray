@@ -2,10 +2,13 @@ package com.zmm.diary.controller;
 
 import com.zmm.diary.bean.ResultVO;
 import com.zmm.diary.bean.User;
+import com.zmm.diary.enums.ResultEnum;
 import com.zmm.diary.service.UserService;
+import com.zmm.diary.utils.UploadOSSUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -73,5 +76,21 @@ public class UserController {
     public ResultVO modifyUsername(@RequestParam("id")String id, @RequestParam("newUsername")String newUsername){
 
         return userService.modifyUsername(id,newUsername);
+    }
+
+    @PostMapping(value = "uploadIcon/{id}")
+    public ResultVO uploadIcon(@PathVariable("id")String id, @RequestParam(value="uploadFile",required=false) MultipartFile file){
+
+        try {
+            String path = UploadOSSUtils.uploadSinglePic(file);
+
+            return userService.uploadIcon(id,path);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVO.error(ResultEnum.PIC_UPLOAD_FAILURE);
+
+        }
+
     }
 }

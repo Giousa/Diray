@@ -21,7 +21,9 @@ public enum ResultEnum {
 
     USERNAME_ERROR(204,"用户名格式不正确"),
 
-    PASSWORD_ERROR(205,"密码格式不正确")
+    PASSWORD_ERROR(205,"密码格式不正确"),
+
+    PIC_UPLOAD_FAILURE(206,"图片上传失败")
 
     ;
 

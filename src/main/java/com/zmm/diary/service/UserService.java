@@ -23,5 +23,6 @@ public interface UserService {
 
     ResultVO modifyUsername(String id,String newUsername);
 
+    ResultVO uploadIcon(String id,String icon);
 
 }

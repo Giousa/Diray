@@ -133,4 +133,22 @@ public class UserServiceImpl implements UserService {
         return ResultVO.ok(modify);
     }
 
+    @Override
+    public ResultVO uploadIcon(String id, String icon) {
+
+        Optional<User> byId = userRepository.findById(id);
+
+        if(!byId.isPresent()){
+            return ResultVO.error(ResultEnum.USER_NOT_EXIST);
+        }
+
+        User user = byId.get();
+
+        user.setIcon(icon);
+
+        User modify = userRepository.save(user);
+
+        return ResultVO.ok(modify);
+    }
+
 }
