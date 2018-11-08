@@ -10,6 +10,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 /**
@@ -27,16 +29,16 @@ public class UserController {
 
 
     @PostMapping(value = "/register")
-    public ResultVO register(@RequestParam("username")String username, @RequestParam("password")String password){
+    public ResultVO register(@RequestParam("phone")String phone, @RequestParam("password")String password,@RequestParam("verifyCode")String verifyCode,HttpServletRequest request){
 
-        return userService.register(username, password);
+        return userService.register(phone, password,verifyCode,request);
     }
 
 
     @PostMapping(value = "/login")
-    public ResultVO login(@RequestParam("username")String username, @RequestParam("password")String password){
+    public ResultVO login(@RequestParam("phone")String phone, @RequestParam("password")String password){
 
-        return userService.login(username, password);
+        return userService.login(phone, password);
     }
 
 
@@ -59,15 +61,15 @@ public class UserController {
     }
 
     @PostMapping(value = "modifyPassword")
-    public ResultVO modifyPassword(@RequestParam("id")String id, @RequestParam("newPassword")String newPassword){
+    public ResultVO modifyPassword(@RequestParam("id")String id, @RequestParam("newPassword")String newPassword,@RequestParam("verifyCode")String verifyCode,HttpServletRequest request){
 
-        return userService.modifyPassword(id,newPassword);
+        return userService.modifyPassword(id,newPassword,verifyCode,request);
     }
 
     @PostMapping(value = "modifyUsername")
-    public ResultVO modifyUsername(@RequestParam("id")String id, @RequestParam("newUsername")String newUsername){
+    public ResultVO modifyPhone(@RequestParam("id")String id, @RequestParam("newPhone")String newPhone){
 
-        return userService.modifyUsername(id,newUsername);
+        return userService.modifyPhone(id,newPhone);
     }
 
     @PostMapping(value = "uploadIcon/{id}")
@@ -84,5 +86,11 @@ public class UserController {
 
         }
 
+    }
+
+    @GetMapping(value = {"/getVerifyCode/{phone}","/getVerifyCode"})
+    public ResultVO getVerifyCode(@PathVariable(value = "phone",required = false)String phone, HttpServletRequest request, HttpServletResponse response){
+
+        return userService.getVerifyCode(phone,request,response);
     }
 }

@@ -3,6 +3,9 @@ package com.zmm.diary.service;
 import com.zmm.diary.bean.ResultVO;
 import com.zmm.diary.bean.User;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Description:
  * Author:zhangmengmeng
@@ -11,18 +14,20 @@ import com.zmm.diary.bean.User;
  */
 public interface UserService {
 
-    ResultVO register(String username, String password);
+    ResultVO register(String phone, String password,String verifyCode,HttpServletRequest request);
 
-    ResultVO login(String username, String password);
+    ResultVO login(String phone, String password);
 
     ResultVO update(User user);
 
     ResultVO findUserById(String id);
 
-    ResultVO modifyPassword(String id,String newPassword);
+    ResultVO modifyPassword(String id,String newPassword,String verifyCode,HttpServletRequest request);
 
-    ResultVO modifyUsername(String id,String newUsername);
+    ResultVO modifyPhone(String id,String newPhone);
 
     ResultVO uploadIcon(String id,String icon);
+
+    ResultVO getVerifyCode(String phone, HttpServletRequest request, HttpServletResponse response);
 
 }

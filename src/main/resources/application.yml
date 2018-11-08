@@ -1,5 +1,5 @@
 spring:
-  profiles:
+  profitms_cookieles:
     active: dev
 
   datasource:
@@ -24,3 +24,8 @@ spring:
 server:
   servlet:
     context-path: /diary
+
+
+DIARY_COOKIE: diary_cookie
+SMS_UID: Giousa
+SMS_KEY: 3d61f53ad35f0ba7ed8f
