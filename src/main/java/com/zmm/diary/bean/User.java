@@ -51,11 +51,13 @@ public class User {
 
     private String birthday;
 
+    @JsonIgnore
     private Integer active;
 
     @CreatedDate
     private Date createTime;
 
+    @JsonIgnore
     @LastModifiedDate
     private Date updateTime;
 }

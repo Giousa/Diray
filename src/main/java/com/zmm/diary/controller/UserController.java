@@ -61,9 +61,9 @@ public class UserController {
     }
 
     @PostMapping(value = "modifyPassword")
-    public ResultVO modifyPassword(@RequestParam("id")String id, @RequestParam("newPassword")String newPassword,@RequestParam("verifyCode")String verifyCode,HttpServletRequest request){
+    public ResultVO modifyPassword(@RequestParam("phone")String phone, @RequestParam("newPassword")String newPassword,@RequestParam("verifyCode")String verifyCode,HttpServletRequest request){
 
-        return userService.modifyPassword(id,newPassword,verifyCode,request);
+        return userService.modifyPassword(phone,newPassword,verifyCode,request);
     }
 
     @PostMapping(value = "modifyUsername")

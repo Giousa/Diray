@@ -23,13 +23,15 @@ public enum ResultEnum {
 
     PASSWORD_ERROR(205,"密码格式不正确"),
 
-    PIC_UPLOAD_FAILURE(206,"图片上传失败"),
+    LOGIN_FAILURE(206,"用户名或密码错误"),
 
-    VERIFYCODE_HAS_SEND(207,"验证码已发送"),
+    PIC_UPLOAD_FAILURE(207,"图片上传失败"),
 
-    VERIFYCODE_HAS_EXPIRE(208,"验证码已过期"),
+    VERIFYCODE_HAS_SEND(208,"验证码已发送"),
 
-    VERIFYCODE_HAS_ERROR(209,"验证码错误")
+    VERIFYCODE_HAS_EXPIRE(209,"验证码已过期"),
+
+    VERIFYCODE_HAS_ERROR(210,"验证码错误")
 
     ;
 

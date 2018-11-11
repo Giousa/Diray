@@ -22,7 +22,7 @@ public interface UserService {
 
     ResultVO findUserById(String id);
 
-    ResultVO modifyPassword(String id,String newPassword,String verifyCode,HttpServletRequest request);
+    ResultVO modifyPassword(String phone,String newPassword,String verifyCode,HttpServletRequest request);
 
     ResultVO modifyPhone(String id,String newPhone);
 

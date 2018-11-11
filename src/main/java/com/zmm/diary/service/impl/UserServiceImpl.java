@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
             return ResultVO.ok(user);
         }
 
-        return ResultVO.error(ResultEnum.USER_NOT_EXIST);
+        return ResultVO.error(ResultEnum.LOGIN_FAILURE);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResultVO modifyPassword(String id, String newPassword,String verifyCode,HttpServletRequest request) {
+    public ResultVO modifyPassword(String phone, String newPassword,String verifyCode,HttpServletRequest request) {
 
         String cookieValue = CookieUtils.getCookie(request,DIARY_COOKIE);
 
@@ -130,19 +130,19 @@ public class UserServiceImpl implements UserService {
             return ResultVO.error(ResultEnum.VERIFYCODE_HAS_EXPIRE);
         }
 
-        Optional<User> byId = userRepository.findById(id);
+        List<User> username = userRepository.findByUsername(phone);
 
-        if(!byId.isPresent()){
+        if(username == null || username.size() == 0){
             return ResultVO.error(ResultEnum.USER_NOT_EXIST);
         }
 
-        User user = byId.get();
+        User user = username.get(0);
 
         user.setPassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()));
 
         User modify = userRepository.save(user);
 
-        return ResultVO.ok(modify);
+        return ResultVO.ok("密码修改成功");
     }
 
     @Override
@@ -189,17 +189,7 @@ public class UserServiceImpl implements UserService {
         }
 
         String cookieValue = CookieUtils.getCookie(request,DIARY_COOKIE);
-        //生成验证码
-//		String verifyCode = VerifyCodeUtils.getCode();
-//		//存储验证码，用作注册和修改密码时校验
-//		CookieUtils.setCookie(request, response, TMS_COOKIE, verifyCode+"", 60);
-//
-//		//验证码不要展示，而是发送到手机
-//		HttpClientUtil clientUtil = HttpClientUtil.getInstance();
-//		String content = SmsUtils.build(verifyCode);
-//		clientUtil.sendMsgUtf8(SMS_UID, SMS_KEY, content, phone);
-//		return SysResult.build(200, "验证码发送成功","验证码发送成功");
-//		System.out.println("发送验证码："+cookieValue);
+
         if(TextUtils.isEmpty(cookieValue)){
             //生成验证码
             String verifyCode = VerifyCodeUtils.getCode();
