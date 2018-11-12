@@ -24,23 +24,13 @@ public class NoteController {
     private NoteService noteService;
 
     @PostMapping(value = "/addNote")
-    public ResultVO addNote(@Valid Note note, BindingResult bindingResult){
-
-        if(bindingResult.hasErrors()){
-
-            return ResultVO.build(201,bindingResult.getFieldError().getDefaultMessage());
-        }
+    public ResultVO addNote(@RequestBody Note note){
 
         return noteService.add(note);
     }
 
     @PostMapping(value = "/updateNote")
-    public ResultVO updateNote(@Valid Note note, BindingResult bindingResult){
-
-        if(bindingResult.hasErrors()){
-
-            return ResultVO.build(201,bindingResult.getFieldError().getDefaultMessage());
-        }
+    public ResultVO updateNote(@RequestBody Note note){
 
         return noteService.update(note);
     }

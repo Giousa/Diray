@@ -26,7 +26,6 @@ import java.util.Date;
 public class Note {
 
     @Id
-    @NotBlank(message = "参数id不能为空")
     private String id;
 
     private String uId;

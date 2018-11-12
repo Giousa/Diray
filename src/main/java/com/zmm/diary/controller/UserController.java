@@ -43,7 +43,7 @@ public class UserController {
 
 
     @PostMapping(value = "/updateUser")
-    public ResultVO updateUser(@Valid User user, BindingResult bindingResult){
+    public ResultVO updateUser(@RequestBody User user, BindingResult bindingResult){
 
         if(bindingResult.hasErrors()){
 
