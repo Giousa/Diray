@@ -31,7 +31,9 @@ public enum ResultEnum {
 
     VERIFYCODE_HAS_EXPIRE(209,"验证码已过期"),
 
-    VERIFYCODE_HAS_ERROR(210,"验证码错误")
+    VERIFYCODE_HAS_ERROR(210,"验证码错误"),
+
+    NOTE_HAS_EXIST(211,"记录不存在")
 
     ;
 
