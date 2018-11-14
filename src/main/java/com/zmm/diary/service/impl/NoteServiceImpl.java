@@ -83,6 +83,7 @@ public class NoteServiceImpl implements NoteService {
             return ResultVO.error(ResultEnum.PARAM_ERROR);
         }
 
+        System.out.println("查询今天的数据参数 userid = "+userId);
         List<Note> todayNotesByUserId = noteRepository.findTodayNotesByUserId(userId);
 
         return ResultVO.ok(todayNotesByUserId);

@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface NoteRepository extends JpaRepository<Note,String> {
 
-    @Query(value = "select n.* from note n where n.to_days(create_time)=to_days(now())  and n.uId=#{userId}", nativeQuery = true)
+    @Query(value = "SELECT * FROM diary.note where to_days(create_time)=to_days(now()) and u_id=?", nativeQuery = true)
     List<Note> findTodayNotesByUserId(String userId);
 
 }
