@@ -35,6 +35,8 @@ public class Note {
 
     private String title;
 
+    private Float money;
+
     private String content;
 
     private String pics;

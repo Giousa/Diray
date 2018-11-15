@@ -1,6 +1,6 @@
 spring:
   profitms_cookieles:
-    active: dev
+    active: prod
 
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
