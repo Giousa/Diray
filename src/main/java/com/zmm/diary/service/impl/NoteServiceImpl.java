@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,10 +84,21 @@ public class NoteServiceImpl implements NoteService {
             return ResultVO.error(ResultEnum.PARAM_ERROR);
         }
 
-        System.out.println("查询今天的数据参数 userid = "+userId);
         List<Note> todayNotesByUserId = noteRepository.findTodayNotesByUserId(userId);
 
         return ResultVO.ok(todayNotesByUserId);
+    }
+
+    @Override
+    public ResultVO findNotesByCreateTime(String userId,String createTime) {
+
+        if(StringUtils.isEmpty(createTime) || StringUtils.isEmpty(userId) ){
+            return ResultVO.error(ResultEnum.PARAM_ERROR);
+        }
+
+        List<Note> notes = noteRepository.findNotesByCreateTime(createTime,userId);
+
+        return ResultVO.ok(notes);
     }
 
     @Override

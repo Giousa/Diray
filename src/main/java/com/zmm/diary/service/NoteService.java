@@ -4,6 +4,8 @@ import com.zmm.diary.bean.Note;
 import com.zmm.diary.bean.ResultVO;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Date;
+
 /**
  * Description:
  * Author:zhangmengmeng
@@ -21,6 +23,8 @@ public interface NoteService {
     ResultVO findNoteById(String id);
 
     ResultVO findToday(String userId);
+
+    ResultVO findNotesByCreateTime(String userId,String createTime);
 
     ResultVO findAll(String userId, Pageable pageable);
 }

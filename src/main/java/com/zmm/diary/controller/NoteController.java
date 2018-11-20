@@ -4,10 +4,9 @@ import com.zmm.diary.bean.Note;
 import com.zmm.diary.bean.ResultVO;
 import com.zmm.diary.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.Date;
 
 /**
  * Description:
@@ -51,6 +50,13 @@ public class NoteController {
     public ResultVO findTodayNotesByUserId(@PathVariable(value = "userId",required = false)String userId){
 
         return noteService.findToday(userId);
+    }
+
+    @GetMapping(value = {"/findNotesByCreateTime/{userId}/{createTime}","/findNotesByCreateTime"})
+    public ResultVO findNotesByCreateTime(@PathVariable(value = "userId",required = false)String userId,
+                                          @PathVariable(value = "createTime",required = false)String createTime){
+
+        return noteService.findNotesByCreateTime(userId,createTime);
     }
 
 
