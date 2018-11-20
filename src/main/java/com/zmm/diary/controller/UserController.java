@@ -73,7 +73,7 @@ public class UserController {
     }
 
     @PostMapping(value = "uploadIcon/{id}")
-    public ResultVO uploadIcon(@PathVariable("id")String id, @RequestParam(value="uploadFile",required=false) MultipartFile file){
+    public ResultVO uploadIcon(@PathVariable String id, @RequestParam(value="uploadFile",required=false) MultipartFile file){
 
         try {
             String path = UploadOSSUtils.uploadSinglePic(file);
