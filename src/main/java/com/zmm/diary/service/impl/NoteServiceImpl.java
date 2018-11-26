@@ -34,6 +34,10 @@ public class NoteServiceImpl implements NoteService {
             return ResultVO.error(ResultEnum.PARAM_ERROR);
         }
 
+        if(note.getCreateTime() == null){
+            note.setCreateTime(new Date());
+        }
+
         note.setId(KeyUtil.getKeyId());
 
         return ResultVO.ok(noteRepository.save(note));
