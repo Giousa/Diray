@@ -33,7 +33,9 @@ public enum ResultEnum {
 
     VERIFYCODE_HAS_ERROR(210,"验证码错误"),
 
-    NOTE_HAS_EXIST(211,"记录不存在")
+    NOTE_HAS_EXIST(211,"记录不存在"),
+
+    DELETE_FAILURE(212,"删除失败")
 
     ;
 
