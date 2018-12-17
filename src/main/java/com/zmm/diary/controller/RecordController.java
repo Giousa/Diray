@@ -8,6 +8,7 @@ import com.zmm.diary.utils.UploadOSSUtils;
 import org.apache.http.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -62,12 +63,12 @@ public class RecordController {
     @GetMapping("/findAllRecords")
     public ResultVO findAllRecords(@RequestParam("userId") String userId,
                                          @RequestParam(value = "page",defaultValue = "0") Integer page,
-                                         @RequestParam(value = "size",defaultValue = "10") Integer size){
+                                         @RequestParam(value = "size",defaultValue = "3") Integer size){
 
         if(StringUtils.isEmpty(userId)){
             return ResultVO.error(ResultEnum.PARAM_ERROR);
         }
 
-        return recordService.findAllRecords(userId, new PageRequest(page, size));
+        return recordService.findAllRecords(userId, new PageRequest(page, size, Sort.Direction.DESC,"createTime"));
     }
 }
