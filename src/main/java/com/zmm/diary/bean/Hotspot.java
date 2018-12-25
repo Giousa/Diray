@@ -2,6 +2,7 @@ package com.zmm.diary.bean;
 
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -34,7 +35,7 @@ public class Hotspot {
 
     private int collect;
 
-//    @CreatedDate
+    @CreatedDate
     private Date createTime;
 
     @LastModifiedDate

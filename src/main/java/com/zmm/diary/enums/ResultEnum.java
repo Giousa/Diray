@@ -35,7 +35,9 @@ public enum ResultEnum {
 
     NOTE_HAS_EXIST(211,"记录不存在"),
 
-    DELETE_FAILURE(212,"删除失败")
+    DELETE_FAILURE(212,"删除失败"),
+
+    TYPE_EMPTY(213,"类型参数不能为空")
 
     ;
 
