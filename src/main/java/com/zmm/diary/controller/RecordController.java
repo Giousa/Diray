@@ -34,7 +34,7 @@ public class RecordController {
 
         for (MultipartFile mf : file) {
             if(!mf.isEmpty()){
-                String pic = UploadOSSUtils.uploadSinglePic(mf);
+                String pic = UploadOSSUtils.uploadSinglePic(mf,".jpg");
                 sb.append(pic+",");
             }
         }

@@ -76,7 +76,7 @@ public class UserController {
     public ResultVO uploadIcon(@PathVariable String id, @RequestParam(value="uploadFile",required=false) MultipartFile file){
 
         try {
-            String path = UploadOSSUtils.uploadSinglePic(file);
+            String path = UploadOSSUtils.uploadSinglePic(file,".jpg");
 
             return userService.uploadIcon(id,path);
 
@@ -85,6 +85,22 @@ public class UserController {
             return ResultVO.error(ResultEnum.PIC_UPLOAD_FAILURE);
 
         }
+
+    }
+
+    @PostMapping(value = "uploadGif")
+    public ResultVO uploadGif(@RequestParam(value="uploadFile",required=false) MultipartFile file){
+        try {
+            String s = UploadOSSUtils.uploadSinglePic(file, ".gif");
+
+            return ResultVO.ok(s);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVO.error(ResultEnum.PIC_UPLOAD_FAILURE);
+
+        }
+
 
     }
 

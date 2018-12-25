@@ -51,8 +51,14 @@ public class User {
 
     private String birthday;
 
+    private String sign;
+
+    private int releases;
+
+    private int funs;
+
     @JsonIgnore
-    private Integer active;
+    private int active;
 
     @CreatedDate
     private Date createTime;

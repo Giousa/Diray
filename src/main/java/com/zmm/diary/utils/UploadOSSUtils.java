@@ -36,16 +36,17 @@ public class UploadOSSUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String uploadSinglePic(MultipartFile file) throws Exception {
+	public static String uploadSinglePic(MultipartFile file,String type) throws Exception {
 		String picId = KeyUtil.getKeyId();
 		// 创建OSSClient实例
 		OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
 		// 上传文件流
-		ossClient.putObject(bucketName, "pic/"+picId+".jpg", file.getInputStream());
+		ossClient.putObject(bucketName, "pic/"+picId+type, file.getInputStream());
 		// 关闭client
 		ossClient.shutdown();
-		String path = picId+".jpg";
+		String path = picId+type;
 
 		return path;
 	}
+
 }
