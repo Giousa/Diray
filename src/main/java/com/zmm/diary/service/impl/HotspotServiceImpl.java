@@ -74,7 +74,9 @@ public class HotspotServiceImpl implements HotspotService {
     @Override
     public ResultVO findAllHotspots(Pageable pageable) {
 
-        List<Hotspot> hotspotList = hotspotRepository.findAll();
+        Page<Hotspot> hotspots = hotspotRepository.findAll(pageable);
+
+        List<Hotspot> hotspotList = hotspots.getContent();
 
         return ResultVO.ok(hotspotList);
     }
