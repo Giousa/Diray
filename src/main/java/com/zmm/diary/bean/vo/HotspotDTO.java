@@ -11,11 +11,11 @@ import java.util.Date;
  * Email:65489469@qq.com
  */
 @Data
-public class HotspotVO {
+public class HotspotDTO {
 
     private String id;
 
-    private UserVO author;
+    private UserDTO author;
 
     private String pic;
 

@@ -1,11 +1,10 @@
 package com.zmm.diary.service.impl;
 
 import com.zmm.diary.bean.Hotspot;
-import com.zmm.diary.bean.Record;
 import com.zmm.diary.bean.ResultVO;
 import com.zmm.diary.bean.User;
-import com.zmm.diary.bean.vo.HotspotVO;
-import com.zmm.diary.bean.vo.UserVO;
+import com.zmm.diary.bean.vo.HotspotDTO;
+import com.zmm.diary.bean.vo.UserDTO;
 import com.zmm.diary.enums.ResultEnum;
 import com.zmm.diary.repository.HotspotRepository;
 import com.zmm.diary.repository.UserRepository;
@@ -18,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,11 +82,28 @@ public class HotspotServiceImpl implements HotspotService {
     @Override
     public ResultVO findAllHotspots(Pageable pageable) {
 
+        //TODO 取巧方式，后期修改
         Page<Hotspot> hotspots = hotspotRepository.findAll(pageable);
 
+        List<HotspotDTO> hotspotDTOList = new ArrayList<>();
         List<Hotspot> hotspotList = hotspots.getContent();
+        for (Hotspot hotspot:hotspotList) {
+            HotspotDTO hotspotDTO = new HotspotDTO();
+            BeanUtils.copyProperties(hotspot,hotspotDTO);
 
-        return ResultVO.ok(hotspotList);
+            Optional<User> byId = userRepository.findById(hotspot.getUId());
+            User user = byId.get();
+
+            UserDTO userDTO = new UserDTO();
+            BeanUtils.copyProperties(user,userDTO);
+
+            hotspotDTO.setAuthor(userDTO);
+
+            hotspotDTOList.add(hotspotDTO);
+        }
+
+
+        return ResultVO.ok(hotspotDTOList);
     }
 
     @Override
@@ -104,17 +120,17 @@ public class HotspotServiceImpl implements HotspotService {
 
         Hotspot hotspot = hotspotOptional.get();
 
-        HotspotVO hotspotVO = new HotspotVO();
-        BeanUtils.copyProperties(hotspot,hotspotVO);
+        HotspotDTO hotspotDTO = new HotspotDTO();
+        BeanUtils.copyProperties(hotspot,hotspotDTO);
 
         Optional<User> byId = userRepository.findById(hotspot.getUId());
         User user = byId.get();
 
-        UserVO userVO = new UserVO();
-        BeanUtils.copyProperties(user,userVO);
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(user,userDTO);
 
-        hotspotVO.setAuthor(userVO);
+        hotspotDTO.setAuthor(userDTO);
 
-        return ResultVO.ok(hotspotVO);
+        return ResultVO.ok(hotspotDTO);
     }
 }

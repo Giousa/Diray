@@ -9,7 +9,7 @@ import lombok.Data;
  * Email:65489469@qq.com
  */
 @Data
-public class UserVO {
+public class UserDTO {
 
     private String username;
 
