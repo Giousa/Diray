@@ -3,10 +3,15 @@ package com.zmm.diary.service.impl;
 import com.zmm.diary.bean.Hotspot;
 import com.zmm.diary.bean.Record;
 import com.zmm.diary.bean.ResultVO;
+import com.zmm.diary.bean.User;
+import com.zmm.diary.bean.vo.HotspotVO;
+import com.zmm.diary.bean.vo.UserVO;
 import com.zmm.diary.enums.ResultEnum;
 import com.zmm.diary.repository.HotspotRepository;
+import com.zmm.diary.repository.UserRepository;
 import com.zmm.diary.service.HotspotService;
 import com.zmm.diary.utils.KeyUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +33,9 @@ public class HotspotServiceImpl implements HotspotService {
 
     @Autowired
     private HotspotRepository hotspotRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public ResultVO add(String userId, String content, String pic) {
@@ -96,6 +104,17 @@ public class HotspotServiceImpl implements HotspotService {
 
         Hotspot hotspot = hotspotOptional.get();
 
-        return ResultVO.ok(hotspot);
+        HotspotVO hotspotVO = new HotspotVO();
+        BeanUtils.copyProperties(hotspot,hotspotVO);
+
+        Optional<User> byId = userRepository.findById(hotspot.getUId());
+        User user = byId.get();
+
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(user,userVO);
+
+        hotspotVO.setAuthor(userVO);
+
+        return ResultVO.ok(hotspotVO);
     }
 }

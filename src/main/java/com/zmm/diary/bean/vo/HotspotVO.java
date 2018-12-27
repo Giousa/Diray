@@ -1,7 +1,7 @@
 package com.zmm.diary.bean.vo;
 
-import com.zmm.diary.bean.User;
 import lombok.Data;
+
 import java.util.Date;
 
 /**
@@ -15,7 +15,7 @@ public class HotspotVO {
 
     private String id;
 
-    private User user;
+    private UserVO author;
 
     private String pic;
 
@@ -23,7 +23,7 @@ public class HotspotVO {
 
     private int collect;
 
-    private Date createTime;
+    private int appreciate;
 
-    private Date updateTime;
+    private Date createTime;
 }
