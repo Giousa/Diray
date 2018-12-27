@@ -55,7 +55,7 @@ public class HotspotController {
     @GetMapping("/findHotspotsByUId")
     public ResultVO findAllRecords(@RequestParam("userId") String userId,
                                    @RequestParam(value = "page",defaultValue = "0") Integer page,
-                                   @RequestParam(value = "size",defaultValue = "3") Integer size){
+                                   @RequestParam(value = "size",defaultValue = "4") Integer size){
 
         if(StringUtils.isEmpty(userId)){
             return ResultVO.error(ResultEnum.PARAM_ERROR);
@@ -66,9 +66,15 @@ public class HotspotController {
 
     @GetMapping("/findAllHotspots")
     public ResultVO findAllRecords(@RequestParam(value = "page",defaultValue = "0") Integer page,
-                                   @RequestParam(value = "size",defaultValue = "3") Integer size){
+                                   @RequestParam(value = "size",defaultValue = "4") Integer size){
 
 
         return hotspotService.findAllHotspots(new PageRequest(page, size, Sort.Direction.DESC,"createTime"));
+    }
+
+    @GetMapping(value = {"/findHotspotById/{id}","/findHotspotById"})
+    public ResultVO findHotspotById(@PathVariable(value = "id",required = false)String id){
+
+        return hotspotService.findHotspotById(id);
     }
 }

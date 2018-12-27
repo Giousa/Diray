@@ -37,7 +37,9 @@ public enum ResultEnum {
 
     DELETE_FAILURE(212,"删除失败"),
 
-    TYPE_EMPTY(213,"类型参数不能为空")
+    TYPE_EMPTY(213,"类型参数不能为空"),
+
+    HOTSPOT_NOT_EXIST(214,"类型参数不能为空")
 
     ;
 

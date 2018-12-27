@@ -35,15 +35,11 @@ public class User {
     @JsonIgnore
     private String password;
 
-    private String type;
-
     private String icon;
 
     private String nickname;
 
-    private Integer gender;
-
-    private Integer age;
+    private String gender;
 
     private Integer height;
 
@@ -56,6 +52,8 @@ public class User {
     private int releases;
 
     private int funs;
+
+    private int followers;
 
     @JsonIgnore
     private int active;

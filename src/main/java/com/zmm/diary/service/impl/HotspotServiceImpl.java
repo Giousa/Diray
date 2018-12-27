@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Description:
@@ -79,5 +80,22 @@ public class HotspotServiceImpl implements HotspotService {
         List<Hotspot> hotspotList = hotspots.getContent();
 
         return ResultVO.ok(hotspotList);
+    }
+
+    @Override
+    public ResultVO findHotspotById(String hotspotId) {
+
+        if(StringUtils.isEmpty(hotspotId)){
+            return ResultVO.error(ResultEnum.PARAM_ERROR);
+        }
+
+        Optional<Hotspot> hotspotOptional = hotspotRepository.findById(hotspotId);
+        if(!hotspotOptional.isPresent()){
+            return ResultVO.error(ResultEnum.HOTSPOT_NOT_EXIST);
+        }
+
+        Hotspot hotspot = hotspotOptional.get();
+
+        return ResultVO.ok(hotspot);
     }
 }

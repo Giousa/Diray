@@ -19,4 +19,6 @@ public interface HotspotService {
 
     ResultVO findAllHotspots(Pageable pageable);
 
+    ResultVO findHotspotById(String hotspotId);
+
 }

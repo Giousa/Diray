@@ -94,8 +94,8 @@ public class UserServiceImpl implements UserService {
         User userDB = byId.get();
 
         userDB.setNickname(user.getNickname());
+        userDB.setSign(user.getSign());
         userDB.setGender(user.getGender());
-        userDB.setAge(user.getAge());
         userDB.setBirthday(user.getBirthday());
         userDB.setHeight(user.getHeight());
         userDB.setWeight(user.getWeight());
