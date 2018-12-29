@@ -63,7 +63,7 @@ public class RecordController {
     @GetMapping("/findAllRecords")
     public ResultVO findAllRecords(@RequestParam("userId") String userId,
                                          @RequestParam(value = "page",defaultValue = "0") Integer page,
-                                         @RequestParam(value = "size",defaultValue = "3") Integer size){
+                                         @RequestParam(value = "size",defaultValue = "10") Integer size){
 
         if(StringUtils.isEmpty(userId)){
             return ResultVO.error(ResultEnum.PARAM_ERROR);

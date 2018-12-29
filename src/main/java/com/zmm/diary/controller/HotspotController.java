@@ -7,6 +7,7 @@ import com.zmm.diary.service.RecordService;
 import com.zmm.diary.utils.UploadOSSUtils;
 import org.apache.http.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
@@ -58,7 +59,7 @@ public class HotspotController {
     @GetMapping("/findHotspotsByUId")
     public ResultVO findAllRecords(@RequestParam("userId") String userId,
                                    @RequestParam(value = "page",defaultValue = "0") Integer page,
-                                   @RequestParam(value = "size",defaultValue = "4") Integer size){
+                                   @RequestParam(value = "size",defaultValue = "10") Integer size){
 
         if(StringUtils.isEmpty(userId)){
             return ResultVO.error(ResultEnum.PARAM_ERROR);
@@ -69,7 +70,7 @@ public class HotspotController {
 
     @GetMapping("/findAllHotspots")
     public ResultVO findAllRecords(@RequestParam(value = "page",defaultValue = "0") Integer page,
-                                   @RequestParam(value = "size",defaultValue = "4") Integer size){
+                                   @RequestParam(value = "size",defaultValue = "10") Integer size){
 
 
         return hotspotService.findAllHotspots(new PageRequest(page, size, Sort.Direction.DESC,"createTime"));
@@ -111,13 +112,13 @@ public class HotspotController {
     @GetMapping("/findCollectionHotspotsByUId")
     public ResultVO findCollectionHotspotsByUId(@RequestParam("userId") String userId,
                                    @RequestParam(value = "page",defaultValue = "0") Integer page,
-                                   @RequestParam(value = "size",defaultValue = "4") Integer size){
+                                   @RequestParam(value = "size",defaultValue = "10") Integer size){
 
         if(StringUtils.isEmpty(userId)){
             return ResultVO.error(ResultEnum.PARAM_ERROR);
         }
 
-        return hotspotService.findCollectionHotspotsByUId(userId, new PageRequest(page, size, Sort.Direction.DESC,"createTime"));
+        return hotspotService.findCollectionHotspotsByUId(userId, new PageRequest(page, size, Sort.Direction.DESC,"updateTime"));
     }
 
 

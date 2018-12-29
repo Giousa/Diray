@@ -90,7 +90,7 @@ public class HotspotServiceImpl implements HotspotService {
     public ResultVO findCollectionHotspotsByUId(String userId, Pageable pageable) {
 
         List<Hotspot> hotspotList = new ArrayList<>();
-        List<Collection> collectionList = collectionRepository.findCollectionsByUserIdAndActive(userId, true);
+        List<Collection> collectionList = collectionRepository.findCollectionsByUserIdAndActive(userId, true,pageable);
         for (Collection collection:collectionList) {
             Optional<Hotspot> byId = hotspotRepository.findById(collection.getHotspotId());
             if(byId.isPresent()){
