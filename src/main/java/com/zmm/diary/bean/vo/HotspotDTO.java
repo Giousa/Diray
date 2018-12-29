@@ -21,8 +21,6 @@ public class HotspotDTO {
 
     private String content;
 
-    private int collect;
-
     private int appreciate;
 
     private Date createTime;

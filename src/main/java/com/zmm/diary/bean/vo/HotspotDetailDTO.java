@@ -21,8 +21,6 @@ public class HotspotDetailDTO {
 
     private String content;
 
-    private int collect;
-
     private int appreciate;
 
     private boolean hasCollect;
