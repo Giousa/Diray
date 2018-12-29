@@ -76,6 +76,12 @@ public class HotspotServiceImpl implements HotspotService {
         }
     }
 
+    /**
+     * 查询个人所有热点
+     * @param userId
+     * @param pageable
+     * @return
+     */
     @Override
     public ResultVO findHotspotsByUId(String userId, Pageable pageable) {
 
@@ -83,9 +89,30 @@ public class HotspotServiceImpl implements HotspotService {
 
         List<Hotspot> hotspotList = hotspots.getContent();
 
-        return ResultVO.ok(hotspotList);
+        List<HotspotDTO> hotspotDTOList = new ArrayList<>();
+        for (Hotspot hotspot:hotspotList) {
+            HotspotDTO hotspotDTO = new HotspotDTO();
+            BeanUtils.copyProperties(hotspot,hotspotDTO);
+            //点赞数
+            List<Appreciate> appreciateList = appreciateRepository.findAppreciatesByHotspotIdAndActive(hotspot.getId(),true);
+            if(appreciateList != null && appreciateList.size() > 0){
+                hotspotDTO.setAppreciate(appreciateList.size());
+            }else {
+                hotspotDTO.setAppreciate(0);
+            }
+            hotspotDTOList.add(hotspotDTO);
+        }
+
+
+        return ResultVO.ok(hotspotDTOList);
     }
 
+    /**
+     * 查询收藏热点
+     * @param userId
+     * @param pageable
+     * @return
+     */
     @Override
     public ResultVO findCollectionHotspotsByUId(String userId, Pageable pageable) {
 
@@ -99,9 +126,37 @@ public class HotspotServiceImpl implements HotspotService {
             }
         }
 
-        return ResultVO.ok(hotspotList);
+        List<HotspotDTO> hotspotDTOList = new ArrayList<>();
+        for (Hotspot hotspot:hotspotList) {
+            HotspotDTO hotspotDTO = new HotspotDTO();
+            BeanUtils.copyProperties(hotspot,hotspotDTO);
+            //作者信息
+            Optional<User> byId = userRepository.findById(hotspot.getUId());
+            User user = byId.get();
+
+            UserDTO userDTO = new UserDTO();
+            BeanUtils.copyProperties(user,userDTO);
+
+            hotspotDTO.setAuthor(userDTO);
+            //点赞数
+            List<Appreciate> appreciateList = appreciateRepository.findAppreciatesByHotspotIdAndActive(hotspot.getId(),true);
+            if(appreciateList != null && appreciateList.size() > 0){
+                hotspotDTO.setAppreciate(appreciateList.size());
+            }else {
+                hotspotDTO.setAppreciate(0);
+            }
+            hotspotDTOList.add(hotspotDTO);
+        }
+
+
+        return ResultVO.ok(hotspotDTOList);
     }
 
+    /**
+     * 查询世界热点
+     * @param pageable
+     * @return
+     */
     @Override
     public ResultVO findAllHotspots(Pageable pageable) {
 
@@ -138,6 +193,12 @@ public class HotspotServiceImpl implements HotspotService {
         return ResultVO.ok(hotspotDTOList);
     }
 
+    /**
+     * 查询热点详情
+     * @param userId
+     * @param hotspotId
+     * @return
+     */
     @Override
     public ResultVO findHotspotById(String userId,String hotspotId) {
 
