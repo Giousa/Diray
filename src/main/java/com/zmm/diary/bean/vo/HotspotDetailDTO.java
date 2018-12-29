@@ -27,5 +27,7 @@ public class HotspotDetailDTO {
 
     private boolean hasAppreciate;
 
+    private boolean hasCorrelate;
+
     private Date createTime;
 }

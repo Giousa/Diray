@@ -5,10 +5,7 @@ import com.zmm.diary.bean.vo.HotspotDTO;
 import com.zmm.diary.bean.vo.HotspotDetailDTO;
 import com.zmm.diary.bean.vo.UserDTO;
 import com.zmm.diary.enums.ResultEnum;
-import com.zmm.diary.repository.AppreciateRepository;
-import com.zmm.diary.repository.CollectionRepository;
-import com.zmm.diary.repository.HotspotRepository;
-import com.zmm.diary.repository.UserRepository;
+import com.zmm.diary.repository.*;
 import com.zmm.diary.service.HotspotService;
 import com.zmm.diary.utils.KeyUtil;
 import org.springframework.beans.BeanUtils;
@@ -42,6 +39,9 @@ public class HotspotServiceImpl implements HotspotService {
 
     @Autowired
     private CollectionRepository collectionRepository;
+
+    @Autowired
+    private CorrelateRepository correlateRepository;
 
     @Override
     public ResultVO addHotspot(String userId, String content, String pic) {
@@ -245,6 +245,19 @@ public class HotspotServiceImpl implements HotspotService {
             hotspotDetailDTO.setHasCollect(false);
         }
 
+        //判断当前用户是否关注作者,若是本人，则忽视
+        if(!hotspot.getUId().equals(userId)){
+            Correlate correlate = correlateRepository.findCorrelateByUserIdAndAuthorId(userId, hotspot.getUId());
+            if(correlate != null && correlate.isActive()){
+                hotspotDetailDTO.setHasCorrelate(true);
+            }else {
+                hotspotDetailDTO.setHasCorrelate(false);
+            }
+        }else {
+            hotspotDetailDTO.setHasCorrelate(true);
+        }
+
+
 
         return ResultVO.ok(hotspotDetailDTO);
     }
@@ -296,6 +309,30 @@ public class HotspotServiceImpl implements HotspotService {
 
             return ResultVO.ok("collectionConfirm");
 
+        }
+    }
+
+    @Override
+    public ResultVO correlateAuthor(String userId, String authorId) {
+
+        Correlate correlate = correlateRepository.findCorrelateByUserIdAndAuthorId(userId, authorId);
+
+        if(correlate != null){
+
+            correlate.setActive(!correlate.isActive());
+            correlateRepository.save(correlate);
+
+            return correlate.isActive() ? ResultVO.ok("correlateConfirm") : ResultVO.ok("correlateCancel");
+
+        }else {
+            correlate = new Correlate();
+            correlate.setId(KeyUtil.getKeyId());
+            correlate.setUserId(userId);
+            correlate.setAuthorId(authorId);
+
+            correlateRepository.save(correlate);
+
+            return ResultVO.ok("correlateConfirm");
         }
     }
 

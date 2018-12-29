@@ -14,8 +14,6 @@ import java.util.List;
  */
 public interface CollectionRepository extends JpaRepository<Collection,String> {
 
-    List<Collection> findCollectionsByHotspotIdAndActive(String hotspotId,boolean activity);
-
     List<Collection> findCollectionsByUserIdAndActive(String userId, boolean activity, Pageable pageable);
 
     Collection findCollectionByUserIdAndHotspotId(String userId, String hotspotId);
