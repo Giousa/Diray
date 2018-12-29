@@ -1,11 +1,12 @@
 package com.zmm.diary.service.impl;
 
-import com.zmm.diary.bean.Hotspot;
-import com.zmm.diary.bean.ResultVO;
-import com.zmm.diary.bean.User;
+import com.zmm.diary.bean.*;
 import com.zmm.diary.bean.vo.HotspotDTO;
+import com.zmm.diary.bean.vo.HotspotDetailDTO;
 import com.zmm.diary.bean.vo.UserDTO;
 import com.zmm.diary.enums.ResultEnum;
+import com.zmm.diary.repository.AppreciateRepository;
+import com.zmm.diary.repository.CollectionRepository;
 import com.zmm.diary.repository.HotspotRepository;
 import com.zmm.diary.repository.UserRepository;
 import com.zmm.diary.service.HotspotService;
@@ -36,8 +37,14 @@ public class HotspotServiceImpl implements HotspotService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private AppreciateRepository appreciateRepository;
+
+    @Autowired
+    private CollectionRepository collectionRepository;
+
     @Override
-    public ResultVO add(String userId, String content, String pic) {
+    public ResultVO addHotspot(String userId, String content, String pic) {
 
         if(StringUtils.isEmpty(userId) || StringUtils.isEmpty(content) || StringUtils.isEmpty(pic)){
             return ResultVO.error(ResultEnum.PARAM_ERROR);
@@ -53,7 +60,7 @@ public class HotspotServiceImpl implements HotspotService {
     }
 
     @Override
-    public ResultVO delete(String hotspotId) {
+    public ResultVO deleteHotspot(String hotspotId) {
 
         if(StringUtils.isEmpty(hotspotId)){
             return ResultVO.error(ResultEnum.PARAM_ERROR);
@@ -91,6 +98,7 @@ public class HotspotServiceImpl implements HotspotService {
             HotspotDTO hotspotDTO = new HotspotDTO();
             BeanUtils.copyProperties(hotspot,hotspotDTO);
 
+            //作者信息
             Optional<User> byId = userRepository.findById(hotspot.getUId());
             User user = byId.get();
 
@@ -98,6 +106,22 @@ public class HotspotServiceImpl implements HotspotService {
             BeanUtils.copyProperties(user,userDTO);
 
             hotspotDTO.setAuthor(userDTO);
+
+            //点赞数
+            List<Appreciate> appreciateList = appreciateRepository.findAppreciatesByHotspotId(hotspot.getId());
+            if(appreciateList != null && appreciateList.size() > 0){
+                hotspotDTO.setAppreciate(appreciateList.size());
+            }else {
+                hotspotDTO.setAppreciate(0);
+            }
+
+//            //收藏数
+//            List<Collection> acollectionList = collectionRepository.findAllByHotspotId(hotspot.getId());
+//            if(acollectionList != null && acollectionList.size() > 0){
+//                hotspotDTO.setCollect(acollectionList.size());
+//            }else {
+//                hotspotDTO.setCollect(0);
+//            }
 
             hotspotDTOList.add(hotspotDTO);
         }
@@ -107,11 +131,7 @@ public class HotspotServiceImpl implements HotspotService {
     }
 
     @Override
-    public ResultVO findHotspotById(String hotspotId) {
-
-        if(StringUtils.isEmpty(hotspotId)){
-            return ResultVO.error(ResultEnum.PARAM_ERROR);
-        }
+    public ResultVO findHotspotById(String userId,String hotspotId) {
 
         Optional<Hotspot> hotspotOptional = hotspotRepository.findById(hotspotId);
         if(!hotspotOptional.isPresent()){
@@ -120,17 +140,68 @@ public class HotspotServiceImpl implements HotspotService {
 
         Hotspot hotspot = hotspotOptional.get();
 
-        HotspotDTO hotspotDTO = new HotspotDTO();
-        BeanUtils.copyProperties(hotspot,hotspotDTO);
+        HotspotDetailDTO hotspotDetailDTO = new HotspotDetailDTO();
+        BeanUtils.copyProperties(hotspot,hotspotDetailDTO);
 
+        //作者信息
         Optional<User> byId = userRepository.findById(hotspot.getUId());
         User user = byId.get();
 
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(user,userDTO);
 
-        hotspotDTO.setAuthor(userDTO);
+        hotspotDetailDTO.setAuthor(userDTO);
 
-        return ResultVO.ok(hotspotDTO);
+        //点赞数
+        List<Appreciate> appreciateList = appreciateRepository.findAppreciatesByHotspotId(hotspot.getId());
+        if(appreciateList != null && appreciateList.size() > 0){
+            hotspotDetailDTO.setAppreciate(appreciateList.size());
+        }else {
+            hotspotDetailDTO.setAppreciate(0);
+        }
+
+        //判断当前用户是否点赞
+        Appreciate appreciate = appreciateRepository.findAppreciateByUserIdAndHotspotId(userId, hotspotId);
+        if(appreciate != null && appreciate.isActive()){
+            hotspotDetailDTO.setHasAppreciate(true);
+        }else {
+            hotspotDetailDTO.setHasAppreciate(false);
+        }
+
+
+        return ResultVO.ok(hotspotDetailDTO);
     }
+
+    @Override
+    public ResultVO appreciateHotspot(String userId, String hotspotId) {
+
+        Appreciate appreciate = appreciateRepository.findAppreciateByUserIdAndHotspotId(userId, hotspotId);
+        if(appreciate != null){
+
+
+            appreciate.setActive(!appreciate.isActive());
+            appreciateRepository.save(appreciate);
+
+            return appreciate.isActive() ? ResultVO.ok("appreciateConfirm") : ResultVO.ok("appreciateCancel");
+
+        }else {
+            appreciate = new Appreciate();
+            appreciate.setId(KeyUtil.getKeyId());
+            appreciate.setUserId(userId);
+            appreciate.setHotspotId(hotspotId);
+            appreciate.setActive(true);
+            appreciateRepository.save(appreciate);
+
+            return ResultVO.ok("appreciateConfirm");
+
+        }
+
+    }
+
+
+    @Override
+    public ResultVO collectionHotspot(String userId, String hotspotId) {
+        return null;
+    }
+
 }

@@ -22,7 +22,7 @@ import java.util.Date;
 @Data
 @EntityListeners(AuditingEntityListener.class)
 @DynamicUpdate
-public class Collection {
+public class Appreciate {
 
     @Id
     private String id;

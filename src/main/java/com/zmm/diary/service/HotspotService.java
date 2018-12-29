@@ -11,14 +11,19 @@ import org.springframework.data.domain.Pageable;
  */
 public interface HotspotService {
 
-    ResultVO add(String userId, String content, String pic);
+    ResultVO addHotspot(String userId, String content, String pic);
 
-    ResultVO delete(String hotspotId);
+    ResultVO deleteHotspot(String hotspotId);
 
     ResultVO findHotspotsByUId(String userId,Pageable pageable);
 
     ResultVO findAllHotspots(Pageable pageable);
 
-    ResultVO findHotspotById(String hotspotId);
+    ResultVO findHotspotById(String userId,String hotspotId);
+
+    ResultVO appreciateHotspot(String userId,String hotspotId);
+
+    ResultVO collectionHotspot(String userId,String hotspotId);
+
 
 }

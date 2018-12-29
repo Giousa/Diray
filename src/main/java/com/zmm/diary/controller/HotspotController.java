@@ -27,7 +27,10 @@ public class HotspotController {
     private HotspotService hotspotService;
 
     @PostMapping(value = "/addHotspot")
-    public ResultVO addHotspot(@RequestParam("userId")String userId,@RequestParam("content")String content,@RequestParam("type")String type, @RequestParam(value="uploadFile",required=false) MultipartFile file)  {
+    public ResultVO addHotspot(@RequestParam("userId")String userId,
+                               @RequestParam("content")String content,
+                               @RequestParam("type")String type,
+                               @RequestParam(value="uploadFile",required=false) MultipartFile file)  {
 
         if(TextUtils.isEmpty(type)){
             return ResultVO.error(ResultEnum.TYPE_EMPTY);
@@ -37,7 +40,7 @@ public class HotspotController {
 
             String path = UploadOSSUtils.uploadSinglePic(file,type);
 
-            return hotspotService.add(userId,content,path);
+            return hotspotService.addHotspot(userId,content,path);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,7 +52,7 @@ public class HotspotController {
     @GetMapping(value = {"/deleteHotspot/{id}","/deleteHotspot"})
     public ResultVO deleteHotspot(@PathVariable(value = "id",required = false)String id){
 
-        return hotspotService.delete(id);
+        return hotspotService.deleteHotspot(id);
     }
 
     @GetMapping("/findHotspotsByUId")
@@ -72,9 +75,26 @@ public class HotspotController {
         return hotspotService.findAllHotspots(new PageRequest(page, size, Sort.Direction.DESC,"createTime"));
     }
 
-    @GetMapping(value = {"/findHotspotById/{id}","/findHotspotById"})
-    public ResultVO findHotspotById(@PathVariable(value = "id",required = false)String id){
+    @GetMapping(value = {"/findHotspotById"})
+    public ResultVO findHotspotById(@RequestParam(value = "userId")String userId,
+                                    @RequestParam(value = "hotspotId")String hotspotId){
 
-        return hotspotService.findHotspotById(id);
+        if(StringUtils.isEmpty(userId) || StringUtils.isEmpty(hotspotId)){
+            return ResultVO.error(ResultEnum.PARAM_ERROR);
+        }
+
+        return hotspotService.findHotspotById(userId,hotspotId);
     }
+
+    @GetMapping(value = {"/appreciateConfirm"})
+    public ResultVO appreciateHotspot(@RequestParam(value = "userId")String userId,
+                                      @RequestParam(value = "hotspotId")String hotspotId){
+
+        if(StringUtils.isEmpty(userId) || StringUtils.isEmpty(hotspotId)){
+            return ResultVO.error(ResultEnum.PARAM_ERROR);
+        }
+
+        return hotspotService.appreciateHotspot(userId,hotspotId);
+    }
+
 }
