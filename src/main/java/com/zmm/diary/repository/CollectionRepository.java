@@ -13,5 +13,8 @@ import java.util.List;
  */
 public interface CollectionRepository extends JpaRepository<Collection,String> {
 
-    List<Collection> findAllByHotspotId(String hotspotId);
+    List<Collection> findAllByHotspotIdAndActive(String hotspotId,boolean activity);
+
+    Collection findCollectionByUserIdAndHotspotId(String userId, String hotspotId);
+
 }

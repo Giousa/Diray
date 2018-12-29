@@ -108,20 +108,12 @@ public class HotspotServiceImpl implements HotspotService {
             hotspotDTO.setAuthor(userDTO);
 
             //点赞数
-            List<Appreciate> appreciateList = appreciateRepository.findAppreciatesByHotspotId(hotspot.getId());
+            List<Appreciate> appreciateList = appreciateRepository.findAppreciatesByHotspotIdAndActive(hotspot.getId(),true);
             if(appreciateList != null && appreciateList.size() > 0){
                 hotspotDTO.setAppreciate(appreciateList.size());
             }else {
                 hotspotDTO.setAppreciate(0);
             }
-
-//            //收藏数
-//            List<Collection> acollectionList = collectionRepository.findAllByHotspotId(hotspot.getId());
-//            if(acollectionList != null && acollectionList.size() > 0){
-//                hotspotDTO.setCollect(acollectionList.size());
-//            }else {
-//                hotspotDTO.setCollect(0);
-//            }
 
             hotspotDTOList.add(hotspotDTO);
         }
@@ -153,7 +145,7 @@ public class HotspotServiceImpl implements HotspotService {
         hotspotDetailDTO.setAuthor(userDTO);
 
         //点赞数
-        List<Appreciate> appreciateList = appreciateRepository.findAppreciatesByHotspotId(hotspot.getId());
+        List<Appreciate> appreciateList = appreciateRepository.findAppreciatesByHotspotIdAndActive(hotspot.getId(),true);
         if(appreciateList != null && appreciateList.size() > 0){
             hotspotDetailDTO.setAppreciate(appreciateList.size());
         }else {
@@ -168,6 +160,14 @@ public class HotspotServiceImpl implements HotspotService {
             hotspotDetailDTO.setHasAppreciate(false);
         }
 
+        //判断当前用户是否收藏
+        Collection collection = collectionRepository.findCollectionByUserIdAndHotspotId(userId, hotspotId);
+        if(collection != null && collection.isActive()){
+            hotspotDetailDTO.setHasCollect(true);
+        }else {
+            hotspotDetailDTO.setHasCollect(false);
+        }
+
 
         return ResultVO.ok(hotspotDetailDTO);
     }
@@ -177,7 +177,6 @@ public class HotspotServiceImpl implements HotspotService {
 
         Appreciate appreciate = appreciateRepository.findAppreciateByUserIdAndHotspotId(userId, hotspotId);
         if(appreciate != null){
-
 
             appreciate.setActive(!appreciate.isActive());
             appreciateRepository.save(appreciate);
@@ -201,7 +200,26 @@ public class HotspotServiceImpl implements HotspotService {
 
     @Override
     public ResultVO collectionHotspot(String userId, String hotspotId) {
-        return null;
+
+        Collection collection = collectionRepository.findCollectionByUserIdAndHotspotId(userId, hotspotId);
+        if(collection != null){
+
+            collection.setActive(!collection.isActive());
+            collectionRepository.save(collection);
+
+            return collection.isActive() ? ResultVO.ok("collectionConfirm") : ResultVO.ok("collectionCancel");
+
+        }else {
+            collection = new Collection();
+            collection.setId(KeyUtil.getKeyId());
+            collection.setUserId(userId);
+            collection.setHotspotId(hotspotId);
+            collection.setActive(true);
+            collectionRepository.save(collection);
+
+            return ResultVO.ok("collectionConfirm");
+
+        }
     }
 
 }

@@ -86,7 +86,7 @@ public class HotspotController {
         return hotspotService.findHotspotById(userId,hotspotId);
     }
 
-    @GetMapping(value = {"/appreciateConfirm"})
+    @GetMapping(value = {"/appreciateHotspot"})
     public ResultVO appreciateHotspot(@RequestParam(value = "userId")String userId,
                                       @RequestParam(value = "hotspotId")String hotspotId){
 
@@ -95,6 +95,17 @@ public class HotspotController {
         }
 
         return hotspotService.appreciateHotspot(userId,hotspotId);
+    }
+
+    @GetMapping(value = {"/collectionHotspot"})
+    public ResultVO collectionHotspot(@RequestParam(value = "userId")String userId,
+                                      @RequestParam(value = "hotspotId")String hotspotId){
+
+        if(StringUtils.isEmpty(userId) || StringUtils.isEmpty(hotspotId)){
+            return ResultVO.error(ResultEnum.PARAM_ERROR);
+        }
+
+        return hotspotService.collectionHotspot(userId,hotspotId);
     }
 
 }

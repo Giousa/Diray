@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface AppreciateRepository extends JpaRepository<Appreciate,String> {
 
-    List<Appreciate> findAppreciatesByHotspotId(String hotspotId);
+    List<Appreciate> findAppreciatesByHotspotIdAndActive(String hotspotId,boolean activity);
 
     Appreciate findAppreciateByUserIdAndHotspotId(String userId, String hotspotId);
 }
