@@ -108,4 +108,17 @@ public class HotspotController {
         return hotspotService.collectionHotspot(userId,hotspotId);
     }
 
+    @GetMapping("/findCollectionHotspotsByUId")
+    public ResultVO findCollectionHotspotsByUId(@RequestParam("userId") String userId,
+                                   @RequestParam(value = "page",defaultValue = "0") Integer page,
+                                   @RequestParam(value = "size",defaultValue = "4") Integer size){
+
+        if(StringUtils.isEmpty(userId)){
+            return ResultVO.error(ResultEnum.PARAM_ERROR);
+        }
+
+        return hotspotService.findCollectionHotspotsByUId(userId, new PageRequest(page, size, Sort.Direction.DESC,"createTime"));
+    }
+
+
 }

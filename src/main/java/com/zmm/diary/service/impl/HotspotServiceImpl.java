@@ -87,6 +87,22 @@ public class HotspotServiceImpl implements HotspotService {
     }
 
     @Override
+    public ResultVO findCollectionHotspotsByUId(String userId, Pageable pageable) {
+
+        List<Hotspot> hotspotList = new ArrayList<>();
+        List<Collection> collectionList = collectionRepository.findCollectionsByUserIdAndActive(userId, true);
+        for (Collection collection:collectionList) {
+            Optional<Hotspot> byId = hotspotRepository.findById(collection.getHotspotId());
+            if(byId.isPresent()){
+                Hotspot hotspot = byId.get();
+                hotspotList.add(hotspot);
+            }
+        }
+
+        return ResultVO.ok(hotspotList);
+    }
+
+    @Override
     public ResultVO findAllHotspots(Pageable pageable) {
 
         //TODO 取巧方式，后期修改
