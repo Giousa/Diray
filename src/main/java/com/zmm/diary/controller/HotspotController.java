@@ -111,7 +111,7 @@ public class HotspotController {
 
     @GetMapping(value = {"/correlateAuthor"})
     public ResultVO correlateAuthor(@RequestParam(value = "userId")String userId,
-                                      @RequestParam(value = "authorId")String authorId){
+                                      @RequestParam(value = "id")String authorId){
 
         if(StringUtils.isEmpty(userId) || StringUtils.isEmpty(authorId)){
             return ResultVO.error(ResultEnum.PARAM_ERROR);
