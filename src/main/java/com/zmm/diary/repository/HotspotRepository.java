@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 /**
  * Description:
  * Author:zhangmengmeng
@@ -15,6 +17,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface HotspotRepository extends JpaRepository<Hotspot,String> {
 
     Page<Hotspot> findHotspotsByUId(String userId, Pageable pageable);
+
+    List<Hotspot> findHotspotsByUId(String userId);
 
 //    @Query(value = "SELECT * FROM diary.hotspot where to_days(create_time)=to_days(?) and u_id=?", nativeQuery = true)
 //    Page<Hotspot> findHotspotsByUId(String userId, Pageable pageable);

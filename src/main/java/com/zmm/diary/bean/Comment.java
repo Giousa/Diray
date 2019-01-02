@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import java.util.Date;
 
 /**
- * Description:
+ * Description: 评论
  * Author:zhangmengmeng
  * Date:2018/12/25
  * Email:65489469@qq.com

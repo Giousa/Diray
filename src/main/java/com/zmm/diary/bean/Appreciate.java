@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import java.util.Date;
 
 /**
- * Description:
+ * Description: 点赞
  * Author:zhangmengmeng
  * Date:2018/12/27
  * Email:65489469@qq.com

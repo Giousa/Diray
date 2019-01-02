@@ -1,8 +1,12 @@
 package com.zmm.diary.service.impl;
 
+import com.zmm.diary.bean.Correlate;
+import com.zmm.diary.bean.Hotspot;
 import com.zmm.diary.bean.ResultVO;
 import com.zmm.diary.bean.User;
 import com.zmm.diary.enums.ResultEnum;
+import com.zmm.diary.repository.CorrelateRepository;
+import com.zmm.diary.repository.HotspotRepository;
 import com.zmm.diary.repository.UserRepository;
 import com.zmm.diary.service.UserService;
 import com.zmm.diary.utils.*;
@@ -39,6 +43,13 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CorrelateRepository correlateRepository;
+
+    @Autowired
+    private HotspotRepository hotspotRepository;
+
 
     @Override
     public ResultVO register(String phone, String password,String verifyCode,HttpServletRequest request) {
@@ -114,7 +125,28 @@ public class UserServiceImpl implements UserService {
         Optional<User> byId = userRepository.findById(id);
 
         if(byId.isPresent()){
-            return ResultVO.ok(byId.get());
+
+            User user = byId.get();
+
+            //热点数
+            List<Hotspot> hotspotList = hotspotRepository.findHotspotsByUId(id);
+            if(hotspotList != null && hotspotList.size() > 0){
+                user.setReleases(hotspotList.size());
+            }
+
+            //关注数
+            List<Correlate> correlateList = correlateRepository.findAllByUserIdAndActive(id, true);
+            if(correlateList != null && correlateList.size() > 0){
+                user.setFollowers(correlateList.size());
+            }
+
+            //粉丝数
+            List<Correlate> correlateFunsList = correlateRepository.findAllByAuthorIdAndActive(id, true);
+            if(correlateFunsList != null && correlateFunsList.size() > 0){
+                user.setFuns(correlateFunsList.size());
+            }
+
+            return ResultVO.ok(user);
         }
 
         return ResultVO.error(ResultEnum.USER_NOT_EXIST);
