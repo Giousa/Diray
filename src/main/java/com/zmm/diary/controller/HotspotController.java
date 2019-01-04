@@ -109,16 +109,6 @@ public class HotspotController {
         return hotspotService.collectionHotspot(userId,hotspotId);
     }
 
-    @GetMapping(value = {"/correlateAuthor"})
-    public ResultVO correlateAuthor(@RequestParam(value = "userId")String userId,
-                                      @RequestParam(value = "id")String authorId){
-
-        if(StringUtils.isEmpty(userId) || StringUtils.isEmpty(authorId)){
-            return ResultVO.error(ResultEnum.PARAM_ERROR);
-        }
-
-        return hotspotService.correlateAuthor(userId,authorId);
-    }
 
     @GetMapping("/findCollectionHotspotsByUId")
     public ResultVO findCollectionHotspotsByUId(@RequestParam("userId") String userId,

@@ -312,28 +312,5 @@ public class HotspotServiceImpl implements HotspotService {
         }
     }
 
-    @Override
-    public ResultVO correlateAuthor(String userId, String authorId) {
-
-        Correlate correlate = correlateRepository.findCorrelateByUserIdAndAuthorId(userId, authorId);
-
-        if(correlate != null){
-
-            correlate.setActive(!correlate.isActive());
-            correlateRepository.save(correlate);
-
-            return correlate.isActive() ? ResultVO.ok("correlateConfirm") : ResultVO.ok("correlateCancel");
-
-        }else {
-            correlate = new Correlate();
-            correlate.setId(KeyUtil.getKeyId());
-            correlate.setUserId(userId);
-            correlate.setAuthorId(authorId);
-
-            correlateRepository.save(correlate);
-
-            return ResultVO.ok("correlateConfirm");
-        }
-    }
 
 }

@@ -39,7 +39,9 @@ public enum ResultEnum {
 
     TYPE_EMPTY(213,"类型参数不能为空"),
 
-    HOTSPOT_NOT_EXIST(214,"类型参数不能为空")
+    HOTSPOT_NOT_EXIST(214,"类型参数不能为空"),
+
+    CORRELATE_NOT_EXIST(215,"用户未关注"),
 
     ;
 

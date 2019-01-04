@@ -17,5 +17,6 @@ public interface CorrelateService {
 
     ResultVO findFunsByUserId(String userId, Pageable pageable);
 
-    ResultVO deleteFollower(String authorId);
+    ResultVO correlateAuthor(String userId, String authorId);
+
 }

@@ -21,6 +21,6 @@ public interface HotspotRepository extends JpaRepository<Hotspot,String> {
     List<Hotspot> findHotspotsByUId(String userId);
 
 //    @Query(value = "SELECT * FROM diary.hotspot where to_days(create_time)=to_days(?) and u_id=?", nativeQuery = true)
-//    Page<Hotspot> findHotspotsByUId(String userId, Pageable pageable);
+//    Page<Hotspot> findHotspotsByUId(String id, Pageable pageable);
 
 }

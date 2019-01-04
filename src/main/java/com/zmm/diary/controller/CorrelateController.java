@@ -1,10 +1,12 @@
 package com.zmm.diary.controller;
 
 import com.zmm.diary.bean.ResultVO;
+import com.zmm.diary.enums.ResultEnum;
 import com.zmm.diary.service.CorrelateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -45,11 +47,15 @@ public class CorrelateController {
         return correlateService.findFunsByUserId(userId,new PageRequest(page, size, Sort.Direction.DESC,"updateTime"));
     }
 
-    @GetMapping(value = {"/deleteFollower/{authorId}","/deleteFollower"})
-    public ResultVO deleteFollower(@PathVariable(value = "authorId",required = false)String authorId){
+    @GetMapping(value = {"/correlateAuthor"})
+    public ResultVO correlateAuthor(@RequestParam(value = "userId")String userId,
+                                    @RequestParam(value = "authorId")String authorId){
 
-        return correlateService.deleteFollower(authorId);
+        if(StringUtils.isEmpty(userId) || StringUtils.isEmpty(authorId)){
+            return ResultVO.error(ResultEnum.PARAM_ERROR);
+        }
+
+        return correlateService.correlateAuthor(userId,authorId);
     }
-
 
 }

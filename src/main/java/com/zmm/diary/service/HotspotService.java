@@ -27,6 +27,4 @@ public interface HotspotService {
 
     ResultVO collectionHotspot(String userId,String hotspotId);
 
-    ResultVO correlateAuthor(String userId,String authorId);
-
 }

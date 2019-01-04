@@ -10,6 +10,7 @@ import com.zmm.diary.repository.CorrelateRepository;
 import com.zmm.diary.repository.HotspotRepository;
 import com.zmm.diary.repository.UserRepository;
 import com.zmm.diary.service.CorrelateService;
+import com.zmm.diary.utils.KeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -76,6 +77,12 @@ public class CorrelateServiceImpl implements CorrelateService {
         return ResultVO.ok(authorList);
     }
 
+    /**
+     * 查询所有关注
+     * @param userId
+     * @param pageable
+     * @return
+     */
     @Override
     public ResultVO findFollowersByUserId(String userId, Pageable pageable) {
 
@@ -84,6 +91,7 @@ public class CorrelateServiceImpl implements CorrelateService {
         List<CorrelateDTO> authorList = new ArrayList<>();
 
         for (Correlate correlate : correlateList) {
+            //根据作者id查询作者信息
             Optional<User> byId = userRepository.findById(correlate.getAuthorId());
             if(byId.isPresent()){
 
@@ -115,6 +123,12 @@ public class CorrelateServiceImpl implements CorrelateService {
 
     }
 
+    /**
+     * 查询所有粉丝
+     * @param userId
+     * @param pageable
+     * @return
+     */
     @Override
     public ResultVO findFunsByUserId(String userId, Pageable pageable) {
 
@@ -124,6 +138,7 @@ public class CorrelateServiceImpl implements CorrelateService {
         List<CorrelateDTO> authorList = new ArrayList<>();
         for (Correlate correlate : correlateList) {
 
+            //根据用户id查询用户信息
             Optional<User> byId = userRepository.findById(correlate.getUserId());
 
             if(byId.isPresent()){
@@ -156,15 +171,27 @@ public class CorrelateServiceImpl implements CorrelateService {
     }
 
     @Override
-    public ResultVO deleteFollower(String authorId) {
+    public ResultVO correlateAuthor(String userId, String authorId) {
 
-        try {
-            correlateRepository.deleteByAuthorId(authorId);
+        Correlate correlate = correlateRepository.findCorrelateByUserIdAndAuthorId(userId, authorId);
 
-            return ResultVO.ok("删除成功");
-        }catch (Exception e){
+        if(correlate != null){
 
-            return ResultVO.error(ResultEnum.DELETE_FAILURE);
+            correlate.setActive(!correlate.isActive());
+            correlateRepository.save(correlate);
+
+            return correlate.isActive() ? ResultVO.ok("correlateConfirm") : ResultVO.ok("correlateCancel");
+
+        }else {
+            correlate = new Correlate();
+            correlate.setId(KeyUtil.getKeyId());
+            correlate.setUserId(userId);
+            correlate.setAuthorId(authorId);
+
+            correlateRepository.save(correlate);
+
+            return ResultVO.ok("correlateConfirm");
         }
     }
+
 }

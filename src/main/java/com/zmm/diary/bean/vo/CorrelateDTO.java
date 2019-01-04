@@ -11,6 +11,8 @@ import lombok.Data;
 @Data
 public class CorrelateDTO {
 
+//    private String correlateId;
+
     private String id;
 
     private String username;
