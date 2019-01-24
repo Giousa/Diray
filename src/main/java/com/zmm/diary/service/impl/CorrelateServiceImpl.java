@@ -38,6 +38,12 @@ public class CorrelateServiceImpl implements CorrelateService {
     @Autowired
     private HotspotRepository hotspotRepository;
 
+    /**
+     * 查询推荐关注  查询所有作者
+     * @param userId
+     * @param pageable
+     * @return
+     */
     @Override
     public ResultVO findAllFollowers(String userId, Pageable pageable) {
 
@@ -45,10 +51,12 @@ public class CorrelateServiceImpl implements CorrelateService {
             return ResultVO.error(ResultEnum.PARAM_ERROR);
         }
 
-        List<User> userList = userRepository.findAllById(userId,pageable);
+        List<User> allUsers = userRepository.findAll();
         List<CorrelateDTO> authorList = new ArrayList<>();
-        for (User user : userList) {
 
+        for (User user : allUsers) {
+
+            //过滤掉本人
             if(!user.getId().equals(userId)){
 
                 CorrelateDTO correlateDTO = new CorrelateDTO();
@@ -68,17 +76,28 @@ public class CorrelateServiceImpl implements CorrelateService {
                     correlateDTO.setFuns(correlateFunsList.size());
                 }
 
+                //判断是否关注
+                Correlate correlate = correlateRepository.findCorrelateByUserIdAndAuthorId(userId, user.getId());
+                if(correlate == null){
+                    correlateDTO.setAttention(false);
+                }else {
+                    if(correlate.isActive()){
+                        correlateDTO.setAttention(true);
+                    }else {
+                        correlateDTO.setAttention(false);
+                    }
+                }
+
                 authorList.add(correlateDTO);
 
             }
-
         }
 
         return ResultVO.ok(authorList);
     }
 
     /**
-     * 查询所有关注
+     * 查询所有关注  本意就是查询作者
      * @param userId
      * @param pageable
      * @return
@@ -103,6 +122,7 @@ public class CorrelateServiceImpl implements CorrelateService {
                 correlateDTO.setNickname(user.getNickname());
                 correlateDTO.setIcon(user.getIcon());
                 correlateDTO.setSign(user.getSign());
+                correlateDTO.setAttention(true);
                 //发布数
                 List<Hotspot> hotspotList = hotspotRepository.findHotspotsByUId(user.getId());
                 if(hotspotList != null && hotspotList.size() > 0){
@@ -124,7 +144,7 @@ public class CorrelateServiceImpl implements CorrelateService {
     }
 
     /**
-     * 查询所有粉丝
+     * 查询所有粉丝  本意就是自己作为作者
      * @param userId
      * @param pageable
      * @return
@@ -151,6 +171,8 @@ public class CorrelateServiceImpl implements CorrelateService {
                 correlateDTO.setNickname(user.getNickname());
                 correlateDTO.setIcon(user.getIcon());
                 correlateDTO.setSign(user.getSign());
+                correlateDTO.setAttention(true);
+
                 //发布数
                 List<Hotspot> hotspotList = hotspotRepository.findHotspotsByUId(user.getId());
                 if(hotspotList != null && hotspotList.size() > 0){
@@ -170,6 +192,12 @@ public class CorrelateServiceImpl implements CorrelateService {
         return ResultVO.ok(authorList);
     }
 
+    /**
+     * 关注或取消关注
+     * @param userId
+     * @param authorId
+     * @return
+     */
     @Override
     public ResultVO correlateAuthor(String userId, String authorId) {
 
@@ -187,6 +215,7 @@ public class CorrelateServiceImpl implements CorrelateService {
             correlate.setId(KeyUtil.getKeyId());
             correlate.setUserId(userId);
             correlate.setAuthorId(authorId);
+            correlate.setActive(true);
 
             correlateRepository.save(correlate);
 

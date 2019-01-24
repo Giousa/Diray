@@ -60,7 +60,7 @@ public class UserController {
         return userService.findUserById(id);
     }
 
-    @PostMapping(value = "modifyPassword")
+    @PostMapping(value = "newPassword")
     public ResultVO modifyPassword(@RequestParam("phone")String phone, @RequestParam("newPassword")String newPassword,@RequestParam("verifyCode")String verifyCode,HttpServletRequest request){
 
         return userService.modifyPassword(phone,newPassword,verifyCode,request);

@@ -30,7 +30,8 @@ public final class CookieUtils {
     public static void writeCookie(HttpServletResponse response, String cookieName,String value){
         Cookie cookie = new Cookie(cookieName,value);
         cookie.setPath("/");
-        cookie.setMaxAge(15*60);
+//        cookie.setMaxAge(15*60);
+        cookie.setMaxAge(30);
         response.addCookie(cookie);
     }
 

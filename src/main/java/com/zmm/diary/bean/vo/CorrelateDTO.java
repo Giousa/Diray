@@ -27,4 +27,6 @@ public class CorrelateDTO {
 
     private int funs;
 
+    private boolean isAttention;
+
 }

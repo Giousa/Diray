@@ -26,8 +26,9 @@ public interface CorrelateRepository extends JpaRepository<Correlate,String> {
 
     List<Correlate> findCorrelatesByUserIdAndActive(String userId, boolean activity, Pageable pageable);
 
-    //判断是否是本人
+    //判断是否关注
     Correlate findCorrelateByUserIdAndAuthorId(String userId, String authorId);
+
 
     void deleteByAuthorId(String authorId);
 
