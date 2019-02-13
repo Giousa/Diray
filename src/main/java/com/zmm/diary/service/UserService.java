@@ -22,12 +22,13 @@ public interface UserService {
 
     ResultVO findUserById(String id);
 
-    ResultVO modifyPassword(String phone,String newPassword,String verifyCode,HttpServletRequest request);
-
     ResultVO modifyPhone(String id,String newPhone);
 
     ResultVO uploadIcon(String id,String icon);
 
     ResultVO getVerifyCode(String phone, HttpServletRequest request, HttpServletResponse response);
 
+    ResultVO modifyPassword(String phone,String oldPassword,String newPassword);
+
+    ResultVO resetPassword(String phone, String newPassword, String verifyCode, HttpServletRequest request);
 }

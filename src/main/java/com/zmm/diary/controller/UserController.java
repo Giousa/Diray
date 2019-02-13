@@ -60,19 +60,27 @@ public class UserController {
         return userService.findUserById(id);
     }
 
-    @PostMapping(value = "newPassword")
-    public ResultVO modifyPassword(@RequestParam("phone")String phone, @RequestParam("newPassword")String newPassword,@RequestParam("verifyCode")String verifyCode,HttpServletRequest request){
+    @PostMapping(value = "/resetPassword")
+    public ResultVO resetPassword(@RequestParam("phone")String phone, @RequestParam("newPassword")String newPassword,@RequestParam("verifyCode")String verifyCode,HttpServletRequest request){
 
-        return userService.modifyPassword(phone,newPassword,verifyCode,request);
+        return userService.resetPassword(phone,newPassword,verifyCode,request);
     }
 
-    @PostMapping(value = "modifyUsername")
+
+    @PostMapping(value = "/modifyPassword")
+    public ResultVO modifyPassword(@RequestParam("phone")String phone, @RequestParam("oldPassword")String oldPassword,@RequestParam("newPassword")String newPassword){
+
+        return userService.modifyPassword(phone,oldPassword,newPassword);
+    }
+
+
+    @PostMapping(value = "/modifyUsername")
     public ResultVO modifyPhone(@RequestParam("id")String id, @RequestParam("newPhone")String newPhone){
 
         return userService.modifyPhone(id,newPhone);
     }
 
-    @PostMapping(value = "uploadIcon/{id}")
+    @PostMapping(value = "/uploadIcon/{id}")
     public ResultVO uploadIcon(@PathVariable String id, @RequestParam(value="uploadFile",required=false) MultipartFile file){
 
         try {
@@ -88,7 +96,7 @@ public class UserController {
 
     }
 
-    @PostMapping(value = "uploadGif")
+    @PostMapping(value = "/uploadGif")
     public ResultVO uploadGif(@RequestParam(value="uploadFile",required=false) MultipartFile file){
         try {
             String s = UploadOSSUtils.uploadSinglePic(file, ".gif");

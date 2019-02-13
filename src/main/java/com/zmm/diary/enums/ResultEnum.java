@@ -43,6 +43,8 @@ public enum ResultEnum {
 
     CORRELATE_NOT_EXIST(215,"用户未关注"),
 
+    OLD_PASSWORD_ERROR(216,"旧密码输入错误")
+
     ;
 
     private Integer code;

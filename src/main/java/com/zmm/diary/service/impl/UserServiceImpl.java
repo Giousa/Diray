@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResultVO modifyPassword(String phone, String newPassword,String verifyCode,HttpServletRequest request) {
+    public ResultVO resetPassword(String phone, String newPassword,String verifyCode,HttpServletRequest request) {
 
         String cookieValue = CookieUtils.getCookie(request,DIARY_COOKIE);
 
@@ -174,7 +174,29 @@ public class UserServiceImpl implements UserService {
 
         User modify = userRepository.save(user);
 
-        return ResultVO.ok("密码修改成功");
+        return ResultVO.ok("密码重置成功");
+    }
+
+    @Override
+    public ResultVO modifyPassword(String phone, String oldPassword, String newPassword) {
+
+        List<User> username = userRepository.findByUsername(phone);
+
+        if(username == null || username.size() == 0){
+            return ResultVO.error(ResultEnum.USER_NOT_EXIST);
+        }
+
+        User user = username.get(0);
+        String old = DigestUtils.md5DigestAsHex(oldPassword.getBytes());
+        if(user.getPassword().equals(old)){
+            user.setPassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()));
+            userRepository.save(user);
+            return ResultVO.ok("密码修改成功");
+        }else {
+            return ResultVO.error(ResultEnum.OLD_PASSWORD_ERROR);
+
+        }
+
     }
 
     @Override
