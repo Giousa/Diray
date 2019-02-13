@@ -31,6 +31,7 @@ public class Comment {
 
     private String fromUid;
 
+    //点赞数
     private int praiseCount;
 
     private Date createTime;
