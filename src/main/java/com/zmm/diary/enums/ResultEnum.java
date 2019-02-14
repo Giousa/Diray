@@ -43,7 +43,11 @@ public enum ResultEnum {
 
     CORRELATE_NOT_EXIST(215,"用户未关注"),
 
-    OLD_PASSWORD_ERROR(216,"旧密码输入错误")
+    OLD_PASSWORD_ERROR(216,"旧密码输入错误"),
+
+    COMMENT_FAILURE(217,"评论失败"),
+
+    COMMENT_REPLY_FAILURE(218,"回复失败"),
 
     ;
 

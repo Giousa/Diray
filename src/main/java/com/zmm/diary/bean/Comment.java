@@ -2,7 +2,7 @@ package com.zmm.diary.bean;
 
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Entity;
@@ -25,15 +25,16 @@ public class Comment {
     @Id
     private String id;
 
+    private String fromUid;
+
     private String hotspotId;
 
     private String content;
 
-    private String fromUid;
-
     //点赞数
     private int praiseCount;
 
+    @CreatedDate
     private Date createTime;
 
 }
