@@ -1,8 +1,12 @@
 package com.zmm.diary.controller;
 
 import com.zmm.diary.bean.ResultVO;
+import com.zmm.diary.enums.ResultEnum;
 import com.zmm.diary.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,6 +41,18 @@ public class CommentController {
 
 
         return commentService.replyComment(commentId,fromUid,toUid,content);
+    }
+
+    @GetMapping("/findAllCommentsByHotspotId")
+    public ResultVO findAllCommentsByHotspotId(@RequestParam("hotspotId") String hotspotId,
+                                   @RequestParam(value = "page",defaultValue = "0") Integer page,
+                                   @RequestParam(value = "size",defaultValue = "10") Integer size){
+
+        if(StringUtils.isEmpty(hotspotId)){
+            return ResultVO.error(ResultEnum.PARAM_ERROR);
+        }
+
+        return commentService.findAllCommentsByHotspotId(hotspotId, new PageRequest(page, size, Sort.Direction.DESC,"createTime"));
     }
 
 }

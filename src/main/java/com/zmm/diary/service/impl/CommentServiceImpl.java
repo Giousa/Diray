@@ -8,7 +8,11 @@ import com.zmm.diary.repository.CommentRepository;
 import com.zmm.diary.service.CommentService;
 import com.zmm.diary.utils.KeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Description:
@@ -51,5 +55,15 @@ public class CommentServiceImpl implements CommentService {
         commentReplyRepository.save(commentReply);
 
         return ResultVO.ok("回复成功");
+    }
+
+    @Override
+    public ResultVO findAllCommentsByHotspotId(String hotspotId, Pageable pageable) {
+
+        Page<Comment> commentsByHotspotId = commentRepository.findCommentsByHotspotId(hotspotId, pageable);
+
+        List<Comment> commentList = commentsByHotspotId.getContent();
+
+        return ResultVO.ok(commentList);
     }
 }
