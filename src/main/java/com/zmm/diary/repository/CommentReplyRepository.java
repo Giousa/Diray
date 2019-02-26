@@ -3,6 +3,8 @@ package com.zmm.diary.repository;
 import com.zmm.diary.bean.CommentReply;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * Description:
  * Author:zhangmengmeng
@@ -11,4 +13,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface CommentReplyRepository extends JpaRepository<CommentReply,String> {
 
+    List<CommentReply> findAllByCommentId(String commentId);
 }
