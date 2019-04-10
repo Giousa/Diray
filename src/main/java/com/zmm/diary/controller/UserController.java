@@ -41,8 +41,8 @@ public class UserController {
         return userService.login(phone, password);
     }
 
-    @GetMapping(value = {"/deleteUser/{id}","/deleteUser"})
-    public ResultVO deleteUser(@PathVariable(value = "id",required = false)String id){
+    @GetMapping(value = {"/deleteUserById/{id}","/deleteUserById"})
+    public ResultVO deleteUserById(@PathVariable(value = "id",required = false)String id){
 
         return userService.delete(id);
     }
