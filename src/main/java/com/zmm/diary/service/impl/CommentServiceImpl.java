@@ -99,13 +99,16 @@ public class CommentServiceImpl implements CommentService {
                 BeanUtils.copyProperties(commentReply,commentReplyDTO);
 
                 String fromUidReply = commentReply.getFromUid();
-                String toUid = commentReply.getToUid();
-
                 User fromUserReply = userRepository.findById(fromUidReply).get();
-                User toUserReply = userRepository.findById(toUid).get();
-
                 commentReplyDTO.setFromName(TextUtils.isEmpty(fromUserReply.getNickname()) ? fromUserReply.getUsername() : fromUserReply.getNickname());
-                commentReplyDTO.setToName(TextUtils.isEmpty(toUserReply.getNickname()) ? toUserReply.getUsername() : toUserReply.getNickname());
+                commentReplyDTO.setFromId(fromUserReply.getId());
+
+                String toUid = commentReply.getToUid();
+                if(!TextUtils.isEmpty(toUid)){
+                    User toUserReply = userRepository.findById(toUid).get();
+                    commentReplyDTO.setToName(TextUtils.isEmpty(toUserReply.getNickname()) ? toUserReply.getUsername() : toUserReply.getNickname());
+                    commentReplyDTO.setToId(toUserReply.getId());
+                }
 
                 commentReplyDTOList.add(commentReplyDTO);
 

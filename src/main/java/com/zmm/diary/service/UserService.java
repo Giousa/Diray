@@ -18,6 +18,8 @@ public interface UserService {
 
     ResultVO login(String phone, String password);
 
+    ResultVO delete(String id);
+
     ResultVO update(User user);
 
     ResultVO findUserById(String id);

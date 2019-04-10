@@ -17,6 +17,10 @@ public class CommentReplyDTO {
 
     private String commentId;
 
+    private String fromId;
+
+    private String toId;
+
     private String fromName;
 
     private String toName;

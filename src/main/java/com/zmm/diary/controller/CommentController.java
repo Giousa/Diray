@@ -36,7 +36,7 @@ public class CommentController {
     @GetMapping(value = "/replyComment")
     public ResultVO replyComment(@RequestParam(value = "commentId")String commentId,
                                  @RequestParam(value = "fromUid")String fromUid,
-                                 @RequestParam(value = "toUid")String toUid,
+                                 @RequestParam(value = "toUid",required = false)String toUid,
                                  @RequestParam(value = "content")String content){
 
 

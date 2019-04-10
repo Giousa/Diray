@@ -92,6 +92,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResultVO delete(String id) {
+
+        if(StringUtils.isEmpty(id)){
+            return ResultVO.error(ResultEnum.PARAM_ERROR);
+        }
+
+        Optional<User> byId = userRepository.findById(id);
+        if(!byId.isPresent()){
+            return ResultVO.error(ResultEnum.USER_NOT_EXIST);
+        }
+        User userDB = byId.get();
+        userDB.setUsername(KeyUtil.getRandomPhoneNumber());
+        userRepository.save(userDB);
+
+        return ResultVO.ok("账号删除成功");
+    }
+
+    @Override
     public ResultVO update(User user) {
 
         String id = user.getId();
@@ -172,7 +190,7 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()));
 
-        User modify = userRepository.save(user);
+        userRepository.save(user);
 
         return ResultVO.ok("密码重置成功");
     }

@@ -30,10 +30,25 @@ public class KeyUtil {
      * 生成32位不重复主键
      * @return
      */
-    public static String getKeyId(){
+    public static synchronized String getKeyId(){
 
         String id = UUID.randomUUID().toString().replace("-", "").toLowerCase();
 
         return id;
+    }
+
+    /**
+     * 生成32位不重复主键
+     * @return
+     */
+    public static synchronized String getRandomPhoneNumber(){
+
+        Random random = new Random();
+
+        int i = random.nextInt(90000000) + 10000000;
+
+        String number = "199"+String.valueOf(i);
+
+        return number;
     }
 }
