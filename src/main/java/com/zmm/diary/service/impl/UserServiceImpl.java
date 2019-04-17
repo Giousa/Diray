@@ -279,9 +279,9 @@ public class UserServiceImpl implements UserService {
             CookieUtils.writeCookie(response,DIARY_COOKIE, verifyCode);
 
             //验证码不要展示，而是发送到手机
-//            HttpClientUtil clientUtil = HttpClientUtil.getInstance();
-//            String content = SmsUtils.build(verifyCode);
-//            clientUtil.sendMsgUtf8(SMS_UID, SMS_KEY, content, phone);
+            HttpClientUtil clientUtil = HttpClientUtil.getInstance();
+            String content = SmsUtils.build(verifyCode);
+            clientUtil.sendMsgUtf8(SMS_UID, SMS_KEY, content, phone);
 
             return ResultVO.ok("验证码发送成功");
         }else{
