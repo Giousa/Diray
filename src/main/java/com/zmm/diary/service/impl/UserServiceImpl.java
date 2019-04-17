@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +56,11 @@ public class UserServiceImpl implements UserService {
     public ResultVO register(String phone, String password,String verifyCode,HttpServletRequest request) {
 
         String cookieValue = CookieUtils.getCookie(request,DIARY_COOKIE);
+
+//        HttpSession session = request.getSession();
+//        String sessionValue = (String) session.getAttribute(DIARY_SESSION);
+
+        System.out.println("注册：sessionValue = "+cookieValue);
 
         if(StringUtils.isEmpty(cookieValue)){
             return ResultVO.error(ResultEnum.VERIFYCODE_HAS_EXPIRE);
@@ -174,9 +180,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResultVO resetPassword(String phone, String newPassword,String verifyCode,HttpServletRequest request) {
 
-        String cookieValue = CookieUtils.getCookie(request,DIARY_COOKIE);
+//        String cookieValue = CookieUtils.getCookie(request,DIARY_COOKIE);
 
-        if(StringUtils.isEmpty(cookieValue)){
+        HttpSession session = request.getSession();
+        String sessionValue = (String) session.getAttribute(DIARY_COOKIE);
+
+        if(StringUtils.isEmpty(sessionValue)){
             return ResultVO.error(ResultEnum.VERIFYCODE_HAS_EXPIRE);
         }
 
@@ -261,6 +270,7 @@ public class UserServiceImpl implements UserService {
         }
 
         String cookieValue = CookieUtils.getCookie(request,DIARY_COOKIE);
+        System.out.println("获取验证码cookieValue = "+cookieValue);
 
         if(TextUtils.isEmpty(cookieValue)){
             //生成验证码
@@ -269,9 +279,9 @@ public class UserServiceImpl implements UserService {
             CookieUtils.writeCookie(response,DIARY_COOKIE, verifyCode);
 
             //验证码不要展示，而是发送到手机
-            HttpClientUtil clientUtil = HttpClientUtil.getInstance();
-            String content = SmsUtils.build(verifyCode);
-            clientUtil.sendMsgUtf8(SMS_UID, SMS_KEY, content, phone);
+//            HttpClientUtil clientUtil = HttpClientUtil.getInstance();
+//            String content = SmsUtils.build(verifyCode);
+//            clientUtil.sendMsgUtf8(SMS_UID, SMS_KEY, content, phone);
 
             return ResultVO.ok("验证码发送成功");
         }else{
